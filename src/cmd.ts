@@ -196,6 +196,7 @@ function datasetCommand(yargs: yargs.Argv<{}>): {
                 },
             }
         )
+        .command("getAllCountriesCallingCode", "Get all countries calling code")
         .command("isWinner", "The account is the dataset auditor winner", {
             datasetId: {
                 description: "Dataset Id",
@@ -278,6 +279,21 @@ function matchingCommand(yargs: yargs.Argv<{}>): {
             },
         })
         .command("getCarsIds", "Get cars Ids", {
+            path: {
+                description: "cars Ids file path",
+                alias: "p",
+                demandOption: true,
+                type: "string",
+            },
+        })
+        .command("getCarsIdsWithState", "Get cars Ids and matching state", {
+            replicaIndex: {
+                description: "Replica index",
+                alias: "r",
+                demandOption: true,
+                type: "number",
+            },
+
             path: {
                 description: "cars Ids file path",
                 alias: "p",
@@ -498,6 +514,15 @@ async function dataset(
                 path: String(argv.path),
             })
             break
+        case "getDatasetState":
+            await new DatasetMetadatas().getDatasetState({
+                context,
+                datasetId: Number(argv.datasetId),
+            })
+            break
+        case "getAllCountriesCallingCode":
+            await new DatasetMetadatas().getAllCountriesCallingCode()
+            break
         case "submitDatasetProof":
             await new DatasetProofs().submitDatasetProof({
                 context,
@@ -546,12 +571,8 @@ async function dataset(
                 path: String(argv.path),
             })
             break
-        case "getDatasetState":
-            await new DatasetMetadatas().getDatasetState({
-                context,
-                datasetId: Number(argv.datasetId),
-            })
-            break
+        default:
+            console.log("Unknown command.")
     }
 }
 
@@ -593,6 +614,13 @@ async function matching(
                 path: String(argv.path),
             })
             break
+        case "getCarsIdsWithState":
+            await new Matching().getCarsIdsWithState({
+                context,
+                replicaIndex: Number(argv.replicaIndex),
+                path: String(argv.path),
+            })
+            break
         case "bidding":
             await new Matching().bidding({
                 context,
@@ -606,6 +634,8 @@ async function matching(
                 matchingId: Number(argv.matchingId),
             })
             break
+        default:
+            console.log("Unknown command.")
     }
 }
 
@@ -665,6 +695,8 @@ async function storage(
                 matchingId: Number(argv.matchingId),
             })
             break
+        default:
+            console.log("Unknown command.")
     }
 }
 
@@ -704,5 +736,7 @@ async function finance(
                 })
             )
             break
+        default:
+            console.log("Unknown command.")
     }
 }
