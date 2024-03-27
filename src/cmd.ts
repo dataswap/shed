@@ -196,6 +196,7 @@ function datasetCommand(yargs: yargs.Argv<{}>): {
                 },
             }
         )
+        .command("getAllCountriesCallingCode", "Get all countries calling code")
         .command("isWinner", "The account is the dataset auditor winner", {
             datasetId: {
                 description: "Dataset Id",
@@ -513,6 +514,15 @@ async function dataset(
                 path: String(argv.path),
             })
             break
+        case "getDatasetState":
+            await new DatasetMetadatas().getDatasetState({
+                context,
+                datasetId: Number(argv.datasetId),
+            })
+            break
+        case "getAllCountriesCallingCode":
+            await new DatasetMetadatas().getAllCountriesCallingCode()
+            break
         case "submitDatasetProof":
             await new DatasetProofs().submitDatasetProof({
                 context,
@@ -559,12 +569,6 @@ async function dataset(
                 context,
                 datasetId: Number(argv.datasetId),
                 path: String(argv.path),
-            })
-            break
-        case "getDatasetState":
-            await new DatasetMetadatas().getDatasetState({
-                context,
-                datasetId: Number(argv.datasetId),
             })
             break
         default:
